@@ -357,102 +357,102 @@ class Game_Change:
             self.screen.fill(BLACK)
             self.event_process()
 
-        def handle_mode_switch(self):
-            current_phase_timings = self.settings[self._current_phase]
-            scatter_timing = current_phase_timings[0]
-            chase_timing = current_phase_timings[1]
+    def handle_mode_switch(self):
+        current_phase_timings = self.settings[self._current_phase]
+        scatter_timing = current_phase_timings[0]
+        chase_timing = current_phase_timings[1]
 
-            if self.settings_in_time == Monsters_moving_const.FIND:
-                self._current_phase += 1
-                self.set_current_mode(Monsters_moving_const.MONSTER_POS)
-            else:
-                self.set_current_mode(Monsters_moving_const.FIND)
-
-            used_timing = scatter_timing if self.settings_in_time == Monsters_moving_const.MONSTER_POS else chase_timing
-            pygame.time.set_timer(self.switch_settings, used_timing * 1000)
-
-        def start_pacman(self):
-            pygame.time.set_timer(self.pacman_end_event, 15000)  # 15s
-
-        def add_game_object(self, obj: Object_in_game):
-            self.object.append(obj)
-
-        def add_coins(self, obj: Object_in_game):
-            self.object.append(obj)
-            self.coins.append(obj)
-
-        def add_monsters(self, obj: Object_in_game):
-            self.object.append(obj)
-            self.monsters.append(obj)
-
-        def add_bonuses(self, obj: Object_in_game):
-            self.object.append(obj)
-            self.bonuses.append(obj)
-
-        def pacman_move(self):
-            self.pacman_active = True
+        if self.settings_in_time == Monsters_moving_const.FIND:
+            self._current_phase += 1
             self.set_current_mode(Monsters_moving_const.MONSTER_POS)
-            self.start_pacman()
+        else:
+            self.set_current_mode(Monsters_moving_const.FIND)
 
-        def set_win(self):
-            self.won = True
+        used_timing = scatter_timing if self.settings_in_time == Monsters_moving_const.MONSTER_POS else chase_timing
+        pygame.time.set_timer(self.switch_settings, used_timing * 1000)
 
-        def get_win(self):
-            return self.won
+    def start_pacman(self):
+        pygame.time.set_timer(self.pacman_end_event, 15000)  # 15s
 
-        def add_score(self, score: Const):
-            self.score += score.value
+    def add_game_object(self, obj: Object_in_game):
+        self.object.append(obj)
 
-        def get_hero_position(self):
-            return self.pacman.get_new_position() if self.pacman != None else (0, 0)
+    def add_coins(self, obj: Object_in_game):
+        self.object.append(obj)
+        self.coins.append(obj)
 
-        def set_current_mode(self, setting: Monsters_moving_const):
-            self.settings_in_time = setting
+    def add_monsters(self, obj: Object_in_game):
+        self.object.append(obj)
+        self.monsters.append(obj)
 
-        def get_current_mode(self):
-            return self.settings_in_time
+    def add_bonuses(self, obj: Object_in_game):
+        self.object.append(obj)
+        self.bonuses.append(obj)
 
-        def end_game(self):
-            if self.pacman in self.object:
-                self.object.remove(self.pacman)
-            self.pacman = None
+    def pacman_move(self):
+        self.pacman_active = True
+        self.set_current_mode(Monsters_moving_const.MONSTER_POS)
+        self.start_pacman()
 
-        def kill_pacman(self):
-            self.lives -= 1
-            self.pacman.new_position(32, 32)
-            self.pacman.set_direction(Moving_const.AGAIN_POS)
-            if self.lives == 0: self.end_game()
+    def set_win(self):
+        self.won = True
 
-        def display_text(self, text, in_position=(200, 0), in_size=30):
-            font = pygame.font.SysFont('Arial', in_size)
-            text_surface = font.render(text, False, (255, 255, 255))
-            self.screen.blit(text_surface, in_position)
+    def get_win(self):
+        return self.won
 
-        def pacman_in_move(self):
-            return self.pacman_active
+    def add_score(self, score: Const):
+        self.score += score.value
 
-        def add_wall(self, obj: Wall):
-            self.add_game_object(obj)
-            self.walls.append(obj)
+    def get_hero_position(self):
+        return self.pacman.get_new_position() if self.pacman != None else (0, 0)
 
-        def get_walls(self):
-            return self.walls
+    def set_current_mode(self, setting: Monsters_moving_const):
+        self.settings_in_time = setting
 
-        def get_coins(self):
-            return self.coins
+    def get_current_mode(self):
+        return self.settings_in_time
 
-        def get_monsters(self):
-            return self.monsters
+    def end_game(self):
+        if self.pacman in self.object:
+            self.object.remove(self.pacman)
+        self.pacman = None
 
-        def get_bonuses(self):
-            return self.bonuses
+    def kill_pacman(self):
+        self.lives -= 1
+        self.pacman.new_position(32, 32)
+        self.pacman.set_direction(Moving_const.AGAIN_POS)
+        if self.lives == 0: self.end_game()
 
-        def get_game_objects(self):
-            return self.object
+    def display_text(self, text, in_position=(200, 0), in_size=30):
+        font = pygame.font.SysFont('Arial', in_size)
+        text_surface = font.render(text, False, (255, 255, 255))
+        self.screen.blit(text_surface, in_position)
 
-        def add_pacman(self, pacman):
-            self.add_game_object(pacman)
-            self.pacman = pacman
+    def pacman_in_move(self):
+        return self.pacman_active
+
+    def add_wall(self, obj: Wall):
+        self.add_game_object(obj)
+        self.walls.append(obj)
+
+    def get_walls(self):
+        return self.walls
+
+    def get_coins(self):
+        return self.coins
+
+    def get_monsters(self):
+        return self.monsters
+
+    def get_bonuses(self):
+        return self.bonuses
+
+    def get_game_objects(self):
+        return self.object
+
+    def add_pacman(self, pacman):
+        self.add_game_object(pacman)
+        self.pacman = pacman
 
         def event_process(self):
             for event in pygame.event.get():
@@ -480,153 +480,353 @@ class Game_Change:
             elif pressed[pygame.K_RIGHT]:
                 self.pacman.set_direction(Moving_const.RIGHT)
 
-    class MovableObject(Object_in_game):
-        def __init__(self, in_surface, x, y, in_size: int, in_color=(255, 0, 0), is_circle: bool = False):
-            super().__init__(in_surface, x, y, in_size, in_color, is_circle)
-            self.current_direction = Moving_const.AGAIN_POS
-            self.direction_buffer = Moving_const.AGAIN_POS
-            self.last_working_direction = Moving_const.AGAIN_POS
-            self.location_queue = []
-            self.next_target = None
-            self.image = pygame.image.load('ghost.png')
+class MovableObject(Object_in_game):
+    def __init__(self, in_surface, x, y, in_size: int, in_color=(255, 0, 0), is_circle: bool = False):
+        super().__init__(in_surface, x, y, in_size, in_color, is_circle)
+        self.current_direction = Moving_const.AGAIN_POS
+        self.direction_buffer = Moving_const.AGAIN_POS
+        self.last_working_direction = Moving_const.AGAIN_POS
+        self.location_queue = []
+        self.next_target = None
+        self.image = pygame.image.load('ghost.png')
 
-        def get_next_location(self):
-            return None if len(self.location_queue) == 0 else self.location_queue.pop(0)
+    def get_next_location(self):
+        return None if len(self.location_queue) == 0 else self.location_queue.pop(0)
 
-        def set_direction(self, in_direction):
-            self.current_direction = in_direction
-            self.direction_buffer = in_direction
+    def set_direction(self, in_direction):
+        self.current_direction = in_direction
+        self.direction_buffer = in_direction
 
-        def collides_with_wall(self, in_position):
-            collision_rect = pygame.Rect(in_position[0], in_position[1], self._size, self._size)
-            collides = False
-            walls = self._renderer.get_walls()
-            for wall in walls:
-                collides = collision_rect.colliderect(wall.shape())
-                if collides: break
-            return collides
+    def collides_with_wall(self, in_position):
+        collision_rect = pygame.Rect(in_position[0], in_position[1], self._size, self._size)
+        collides = False
+        walls = self._renderer.get_walls()
+        for wall in walls:
+            collides = collision_rect.colliderect(wall.shape())
+            if collides: break
+        return collides
 
-        def check_collision_in_direction(self, in_direction: Moving_const):
-            desired_position = (0, 0)
-            if in_direction == Moving_const.AGAIN_POS: return False, desired_position
-            if in_direction == Moving_const.UP:
-                desired_position = (self.x, self.y - 1)
-            elif in_direction == Moving_const.DOWN:
-                desired_position = (self.x, self.y + 1)
-            elif in_direction == Moving_const.LEFT:
-                desired_position = (self.x - 1, self.y)
-            elif in_direction == Moving_const.RIGHT:
-                desired_position = (self.x + 1, self.y)
+    def check_collision_in_direction(self, in_direction: Moving_const):
+        desired_position = (0, 0)
+        if in_direction == Moving_const.AGAIN_POS: return False, desired_position
+        if in_direction == Moving_const.UP:
+            desired_position = (self.x, self.y - 1)
+        elif in_direction == Moving_const.DOWN:
+            desired_position = (self.x, self.y + 1)
+        elif in_direction == Moving_const.LEFT:
+            desired_position = (self.x - 1, self.y)
+        elif in_direction == Moving_const.RIGHT:
+            desired_position = (self.x + 1, self.y)
 
-            return self.collides_with_wall(desired_position), desired_position
+        return self.collides_with_wall(desired_position), desired_position
 
-        def automatic_move(self, in_direction: Moving_const):
-            pass
+    def automatic_move(self, in_direction: Moving_const):
+        pass
 
-        def tick(self):
-            self.reached_target()
+    def tick(self):
+        self.reached_target()
+        self.automatic_move(self.current_direction)
+
+    def reached_target(self):
+        pass
+
+    def draw(self):
+        self.image = pygame.transform.scale(self.image, (32, 32))
+        self.area.blit(self.image, self.shape())
+
+class Packman(MovableObject):
+    def __init__(self, in_surface, x, y, in_size: int):
+        super().__init__(in_surface, x, y, in_size, (255, 255, 0), False)
+        self.last_non_colliding_position = (0, 0)
+        self.open = pygame.image.load("pacman_rot_otkrit.png")
+        self.closed = pygame.image.load("man.png")
+        self.image = self.open
+        self.mouth_open = True
+
+    def tick(self):
+        if self.x < 0:
+            self.x = self._renderer.width
+
+        if self.x > self._renderer.width:
+            self.x = 0
+
+        if self.y < 0:
+            self.y = self._renderer.height
+
+        if self.y > self._renderer.height:
+            self.y = 0
+
+        self.last_non_colliding_position = self.get_new_position()
+
+        if self.check_collision_in_direction(self.direction_buffer)[0]:
             self.automatic_move(self.current_direction)
+        else:
+            self.automatic_move(self.direction_buffer)
+            self.current_direction = self.direction_buffer
 
-        def reached_target(self):
-            pass
+        if self.collides_with_wall((self.x, self.y)):
+            self.new_position(self.last_non_colliding_position[0], self.last_non_colliding_position[1])
 
-        def draw(self):
-            self.image = pygame.transform.scale(self.image, (32, 32))
-            self.area.blit(self.image, self.shape())
+        self.handle_cookie_pickup()
+        self.handle_ghosts()
 
-    class Packman(MovableObject):
-        def __init__(self, in_surface, x, y, in_size: int):
-            super().__init__(in_surface, x, y, in_size, (255, 255, 0), False)
-            self.last_non_colliding_position = (0, 0)
-            self.open = pygame.image.load("pacman_rot_otkrit.png")
-            self.closed = pygame.image.load("man.png")
-            self.image = self.open
-            self.mouth_open = True
+    def automatic_move(self, in_direction: Moving_const):
+        collision_result = self.check_collision_in_direction(in_direction)
 
-        def tick(self):
-            if self.x < 0:
-                self.x = self._renderer.width
+        desired_position_collides = collision_result[0]
+        if not desired_position_collides:
+            self.last_working_direction = self.current_direction
+            desired_position = collision_result[1]
+            self.new_position(desired_position[0], desired_position[1])
+        else:
+            self.current_direction = self.last_working_direction
 
-            if self.x > self._renderer.width:
-                self.x = 0
+    def handle_cookie_pickup(self):
+        collision_rect = pygame.Rect(self.x, self.y, self._size, self._size)
+        cookies = self._renderer.get_coins()
+        powerups = self._renderer.get_bonuses()
+        game_objects = self._renderer.get_game_objects()
+        cookie_to_remove = None
+        for cookie in cookies:
+            collides = collision_rect.colliderect(cookie.shape())
+            if collides and cookie in game_objects:
+                game_objects.remove(cookie)
+                self._renderer.add_score(Const.BONUSES)
+                cookie_to_remove = cookie
 
-            if self.y < 0:
-                self.y = self._renderer.height
+        if cookie_to_remove is not None:
+            cookies.remove(cookie_to_remove)
 
-            if self.y > self._renderer.height:
-                self.y = 0
+        if len(self._renderer.get_coins()) == 0:
+            self._renderer.set_win()
 
-            self.last_non_colliding_position = self.get_new_position()
+        for powerup in powerups:
+            collides = collision_rect.colliderect(powerup.shape())
+            if collides and powerup in game_objects:
+                if not self._renderer.pacman_in_move():
+                    game_objects.remove(powerup)
+                    self._renderer.add_score(Const.POWER)
+                    self._renderer.pacman_move()
 
-            if self.check_collision_in_direction(self.direction_buffer)[0]:
-                self.automatic_move(self.current_direction)
+    def handle_ghosts(self):
+        collision_rect = pygame.Rect(self.x, self.y, self._size, self._size)
+        ghosts = self._renderer.get_monsters()
+        game_objects = self._renderer.get_game_objects()
+        for ghost in ghosts:
+            collides = collision_rect.colliderect(ghost.shape())
+            if collides and ghost in game_objects:
+                if self._renderer.pacman_in_move():
+                    game_objects.remove(ghost)
+                    self._renderer.add_score(Const.MONSTERS)
+                else:
+                    if not self._renderer.get_win():
+                        self._renderer.kill_pacman()
+
+    def draw(self):
+        half_size = self._size / 2
+        self.image = self.open if self.mouth_open else self.closed
+        if self.current_direction.value == 180:
+            self.image = pygame.transform.flip(self.image, True, False)
+        else:
+            self.image = pygame.transform.rotate(self.image, self.current_direction.value)
+        super(Packman, self).draw()
+
+
+class Monsters(MovableObject):
+    def __init__(self, in_surface, x, y, in_size: int, in_game_controller, sprite_path="ghost_fright.png"):
+        super().__init__(in_surface, x, y, in_size)
+        self.game_controller = in_game_controller
+        self.sprite_normal = pygame.image.load(sprite_path)
+        self.sprite_fright = pygame.image.load("ghost_fright.png")
+
+    def reached_target(self):
+        if (self.x, self.y) == self.next_target:
+            self.next_target = self.get_next_location()
+        self.current_direction = self.calculate_direction_to_next_target()
+
+    def set_new_path(self, in_path):
+        for item in in_path:
+            self.location_queue.append(item)
+        self.next_target = self.get_next_location()
+
+    def calculate_direction_to_next_target(self) -> Moving_const:
+        if self.next_target is None:
+            if self._renderer.get_current_mode() == Monsters_moving_const.FIND and not self._renderer.pacman_in_move():
+                self.request_path_to_player(self)
             else:
-                self.automatic_move(self.direction_buffer)
-                self.current_direction = self.direction_buffer
+                self.game_controller.request_new_random_path(self)
+            return Moving_const.AGAIN_POS
 
-            if self.collides_with_wall((self.x, self.y)):
-                self.new_position(self.last_non_colliding_position[0], self.last_non_colliding_position[1])
+        diff_x = self.next_target[0] - self.x
+        diff_y = self.next_target[1] - self.y
+        if diff_x == 0:
+            return Moving_const.DOWN if diff_y > 0 else Moving_const.UP
+        if diff_y == 0:
+            return Moving_const.LEFT if diff_x < 0 else Moving_const.RIGHT
 
-            self.handle_cookie_pickup()
-            self.handle_ghosts()
+        if self._renderer.get_current_mode() == Monsters_moving_const.FIND and not self._renderer.pacman_in_move():
+            self.request_path_to_player(self)
+        else:
+            self.game_controller.request_new_random_path(self)
+        return Moving_const.AGAIN_POS
 
-        def automatic_move(self, in_direction: Moving_const):
-            collision_result = self.check_collision_in_direction(in_direction)
+    def request_path_to_player(self, in_ghost):
+        player_position = screen_into_maze(in_ghost._renderer.get_hero_position())
+        current_maze_coord = screen_into_maze(in_ghost.get_new_position())
+        path = self.game_controller.p.get_path(current_maze_coord[1], current_maze_coord[0], player_position[1],
+                                               player_position[0])
 
-            desired_position_collides = collision_result[0]
-            if not desired_position_collides:
-                self.last_working_direction = self.current_direction
-                desired_position = collision_result[1]
-                self.new_position(desired_position[0], desired_position[1])
-            else:
-                self.current_direction = self.last_working_direction
+        new_path = [maze_into_screen(item) for item in path]
+        in_ghost.set_new_path(new_path)
 
-        def handle_cookie_pickup(self):
-            collision_rect = pygame.Rect(self.x, self.y, self._size, self._size)
-            cookies = self._renderer.get_coins()
-            powerups = self._renderer.get_bonuses()
-            game_objects = self._renderer.get_game_objects()
-            cookie_to_remove = None
-            for cookie in cookies:
-                collides = collision_rect.colliderect(cookie.shape())
-                if collides and cookie in game_objects:
-                    game_objects.remove(cookie)
-                    self._renderer.add_score(Const.BONUSES)
-                    cookie_to_remove = cookie
+    def automatic_move(self, in_direction: Moving_const):
+        if in_direction == Moving_const.UP:
+            self.new_position(self.x, self.y - 1)
+        elif in_direction == Moving_const.DOWN:
+            self.new_position(self.x, self.y + 1)
+        elif in_direction == Moving_const.LEFT:
+            self.new_position(self.x - 1, self.y)
+        elif in_direction == Moving_const.RIGHT:
+            self.new_position(self.x + 1, self.y)
 
-            if cookie_to_remove is not None:
-                cookies.remove(cookie_to_remove)
+    def draw(self):
+        self.image = self.sprite_fright if self._renderer.pacman_in_move() else self.sprite_normal
+        super(Monsters, self).draw()
 
-            if len(self._renderer.get_coins()) == 0:
-                self._renderer.set_win()
 
-            for powerup in powerups:
-                collides = collision_rect.colliderect(powerup.shape())
-                if collides and powerup in game_objects:
-                    if not self._renderer.pacman_in_move():
-                        game_objects.remove(powerup)
-                        self._renderer.add_score(Const.POWER)
-                        self._renderer.pacman_move()
+class Coins(Object_in_game):
+    def __init__(self, in_surface, x, y):
+        super().__init__(in_surface, x, y, 4, (255, 255, 0), True)
 
-        def handle_ghosts(self):
-            collision_rect = pygame.Rect(self.x, self.y, self._size, self._size)
-            ghosts = self._renderer.get_monsters()
-            game_objects = self._renderer.get_game_objects()
-            for ghost in ghosts:
-                collides = collision_rect.colliderect(ghost.shape())
-                if collides and ghost in game_objects:
-                    if self._renderer.pacman_in_move():
-                        game_objects.remove(ghost)
-                        self._renderer.add_score(Const.MONSTERS)
-                    else:
-                        if not self._renderer.get_win():
-                            self._renderer.kill_pacman()
 
-        def draw(self):
-            half_size = self._size / 2
-            self.image = self.open if self.mouth_open else self.closed
-            if self.current_direction.value == 180:
-                self.image = pygame.transform.flip(self.image, True, False)
-            else:
-                self.image = pygame.transform.rotate(self.image, self.current_direction.value)
-            super(Packman, self).draw()
+class Bonuses(Object_in_game):
+    def __init__(self, in_surface, x, y):
+        super().__init__(in_surface, x, y, 8, (255, 255, 255), True)
+
+
+class Find_Packman:
+    def __init__(self, in_arr):
+        cost = np.array(in_arr, dtype=np.bool_).tolist()
+        self.pf = tcod.path.AStar(cost=cost, diagonal=0)
+
+    def get_path(self, from_x, from_y, to_x, to_y) -> object:
+        res = self.pf.get_path(from_x, from_y, to_x, to_y)
+        return [(sub[1], sub[0]) for sub in res]
+
+
+class Game_Control:
+    def __init__(self):
+        self.ascii_maze = [
+            "XXXX  XXXXXXXX XXXXXXXX  XXXX",
+            "X                           X",
+            "X XXXX XXXXXXX XXXXXXX XXXX X",
+            "X                           X",
+            "  XXXXXX X XXXXXXX X XXXXXX  ",
+            "X        X    X    X        X",
+            "XXX XXXXXXXXX X XXXXXXXXX XXX",
+            "X    O  X           X  O    X",
+            "XX XX XXX XXXXXXXXX XXX XX XX",
+            "X   X X       O       X X   X",
+            "X X    X    X X X    X      X",
+            "X XX XXX XXXX X XXXX XXX XX X",
+            "       X XG   X   GX X       ",
+            "X XXXXXX XG       GX XXXXXX X",
+            "X        XXXXX XXXXX        X",
+            "  X  XXX             XXX  X  ",
+            "X       XX  XXXXX  XX       X",
+            "X XXXXX   XX  X  XX   XXXXX X",
+            "X       X     O     X       X",
+            "XX XX XXX XXXXXXXXX XXX XX XX",
+            "X       X     O     X       X",
+            "XXX XXXXXXXXX X XXXXXXXXX XXX",
+            "X             X             X",
+            "  XXXXXX X XXXXXXX X XXXXXX  ",
+            "X     O               O     X",
+            "X XXXX XXXXXXX XXXXXXX XXXX X",
+            "X                           X",
+            "XXXX  XXXXXXXX XXXXXXXX  XXXX",
+        ]
+
+        self.numpy_maze = []
+        self.cookie_spaces = []
+        self.powerup_spaces = []
+        self.reachable_spaces = []
+        self.ghost_spawns = []
+        self.ghost_colors = [
+            "4monst-transformed.png",
+            "3monst-transformed.png",
+            "6monst-transformed.png",
+            "5monst-ddVBTHuZv-transformed.png"
+        ]
+        self.size = (0, 0)
+        self.convert_maze_to_numpy()
+        self.p = Find_Packman(self.numpy_maze)
+
+    def request_new_random_path(self, in_ghost: Monsters):
+        random_space = random.choice(self.reachable_spaces)
+        current_maze_coord = screen_into_maze(in_ghost.get_new_position())
+
+        path = self.p.get_path(current_maze_coord[1], current_maze_coord[0], random_space[1],
+                               random_space[0])
+        test_path = [maze_into_screen(item) for item in path]
+        in_ghost.set_new_path(test_path)
+
+    def convert_maze_to_numpy(self):
+        for x, row in enumerate(self.ascii_maze):
+            self.size = (len(row), x + 1)
+            binary_row = []
+            for y, column in enumerate(row):
+                if column == "G":
+                    self.ghost_spawns.append((y, x))
+
+                if column == "X":
+                    binary_row.append(0)
+                else:
+                    binary_row.append(1)
+                    self.cookie_spaces.append((y, x))
+                    self.reachable_spaces.append((y, x))
+                    if column == "O":
+                        self.powerup_spaces.append((y, x))
+
+            self.numpy_maze.append(binary_row)
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    main_window = Access()
+    widget = QtWidgets.QStackedWidget()
+    widget.addWidget(main_window)
+    widget.setFixedWidth(450)
+    widget.setFixedHeight(650)
+    widget.show()
+    app.exec_()
+    SIZE_FOR_ALL = 32
+    game_start = Game_Control()
+    size = game_start.size
+    game_change = Game_Change(size[0] * SIZE_FOR_ALL, size[1] * SIZE_FOR_ALL)
+
+    for y, row in enumerate(game_start.numpy_maze):
+        for x, column in enumerate(row):
+            if column == 0:
+                game_change.add_wall(Wall(game_change, x, y, SIZE_FOR_ALL))
+
+    for coins_place in game_start.cookie_spaces:
+        translated = maze_into_screen(coins_place)
+        cookie = Coins(game_change, translated[0] + SIZE_FOR_ALL / 2, translated[1] + SIZE_FOR_ALL / 2)
+        game_change.add_coins(cookie)
+
+    for bonuses_place in game_start.powerup_spaces:
+        translated = maze_into_screen(bonuses_place)
+        powerup = Bonuses(game_change, translated[0] + SIZE_FOR_ALL / 2, translated[1] + SIZE_FOR_ALL / 2)
+        game_change.add_bonuses(powerup)
+
+    for i, ghost_spawn in enumerate(game_start.ghost_spawns):
+        translated = maze_into_screen(ghost_spawn)
+        monsters = Monsters(game_change, translated[0], translated[1], SIZE_FOR_ALL, game_start,
+                      game_start.ghost_colors[i % 4])
+        game_change.add_monsters(monsters)
+
+    pacman = Packman(game_change, SIZE_FOR_ALL, SIZE_FOR_ALL, SIZE_FOR_ALL)
+    game_change.add_pacman(pacman)
+    game_change.set_current_mode(Monsters_moving_const.FIND)
+    game_change.tick(120)
