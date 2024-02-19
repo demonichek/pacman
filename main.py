@@ -454,31 +454,31 @@ class Game_Change:
         self.add_game_object(pacman)
         self.pacman = pacman
 
-        def event_process(self):
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.done = True
+    def event_process(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.done = True
 
-                if event.type == self.switch_settings:
-                    self.handle_mode_switch()
+            if event.type == self.switch_settings:
+                self.handle_mode_switch()
 
-                if event.type == self.pacman_end_event:
-                    self.pacman_active = False
+            if event.type == self.pacman_end_event:
+                self.pacman_active = False
 
-                if event.type == self.pacman_start_event:
-                    if self.pacman is None: break
-                    self.pacman.mouth_open = not self.pacman.mouth_open
+            if event.type == self.pacman_start_event:
+                if self.pacman is None: break
+                self.pacman.mouth_open = not self.pacman.mouth_open
 
-            pressed = pygame.key.get_pressed()
-            if self.pacman is None: return
-            if pressed[pygame.K_UP]:
-                self.pacman.set_direction(Moving_const.UP)
-            elif pressed[pygame.K_LEFT]:
-                self.pacman.set_direction(Moving_const.LEFT)
-            elif pressed[pygame.K_DOWN]:
-                self.pacman.set_direction(Moving_const.DOWN)
-            elif pressed[pygame.K_RIGHT]:
-                self.pacman.set_direction(Moving_const.RIGHT)
+        pressed = pygame.key.get_pressed()
+        if self.pacman is None: return
+        if pressed[pygame.K_UP]:
+            self.pacman.set_direction(Moving_const.UP)
+        elif pressed[pygame.K_LEFT]:
+            self.pacman.set_direction(Moving_const.LEFT)
+        elif pressed[pygame.K_DOWN]:
+            self.pacman.set_direction(Moving_const.DOWN)
+        elif pressed[pygame.K_RIGHT]:
+            self.pacman.set_direction(Moving_const.RIGHT)
 
 class MovableObject(Object_in_game):
     def __init__(self, in_surface, x, y, in_size: int, in_color=(255, 0, 0), is_circle: bool = False):
