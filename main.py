@@ -306,9 +306,14 @@ class Game_Change:
             if self.pacman is None or self.get_win():
                 end.play()
                 ground.stop()
-                self.restart = pygame.image.load('gameover.jpg')
-                self.restart = pygame.transform.scale(self.restart, (970, 900))
-                self.screen.blit(self.restart, (0, 0))
+                if self.pacman is None:
+                    self.restart = pygame.image.load('gameover.jpg')
+                    self.restart = pygame.transform.scale(self.restart, (970, 900))
+                    self.screen.blit(self.restart, (0, 0))
+                elif self.get_win():
+                    self.restart = pygame.image.load('youwin.jpg')
+                    self.restart = pygame.transform.scale(self.restart, (970, 900))
+                    self.screen.blit(self.restart, (0, 0))
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         exit()
