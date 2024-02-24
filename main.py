@@ -22,6 +22,7 @@ class Access(QDialog):
         self.log_in.clicked.connect(self.go_to_create)
 
     def login_function(self):
+        global flag
         email = self.email.text()
         con = sqlite3.connect('logins.db')
         cur = con.cursor()
@@ -37,6 +38,7 @@ class Access(QDialog):
             con.commit()
             con.close()
             if password == password2:
+                flag = True
                 self.close()
                 QApplication.quit()
 
@@ -804,34 +806,36 @@ if __name__ == "__main__":
     widget.setFixedWidth(450)
     widget.setFixedHeight(650)
     widget.show()
+    flag = False
     app.exec_()
-    SIZE_FOR_ALL = 32
-    game_start = Game_Control()
-    size = game_start.size
-    game_change = Game_Change(size[0] * SIZE_FOR_ALL, size[1] * SIZE_FOR_ALL)
-
-    for y, row in enumerate(game_start.numpy_maze):
-        for x, column in enumerate(row):
-            if column == 0:
-                game_change.add_wall(Wall(game_change, x, y, SIZE_FOR_ALL))
-
-    for coins_place in game_start.cookie_spaces:
-        translated = maze_into_screen(coins_place)
-        cookie = Coins(game_change, translated[0] + SIZE_FOR_ALL / 2, translated[1] + SIZE_FOR_ALL / 2)
-        game_change.add_coins(cookie)
-
-    for bonuses_place in game_start.powerup_spaces:
-        translated = maze_into_screen(bonuses_place)
-        powerup = Bonuses(game_change, translated[0] + SIZE_FOR_ALL / 2, translated[1] + SIZE_FOR_ALL / 2)
-        game_change.add_bonuses(powerup)
-
-    for i, ghost_spawn in enumerate(game_start.ghost_spawns):
-        translated = maze_into_screen(ghost_spawn)
-        monsters = Monsters(game_change, translated[0], translated[1], SIZE_FOR_ALL, game_start,
-                      game_start.ghost_colors[i % 4])
-        game_change.add_monsters(monsters)
-
-    pacman = Packman(game_change, SIZE_FOR_ALL, SIZE_FOR_ALL, SIZE_FOR_ALL)
-    game_change.add_pacman(pacman)
-    game_change.set_current_mode(Monsters_moving_const.FIND)
-    game_change.tick(120)
+    if flag:
+        SIZE_FOR_ALL = 32
+        game_start = Game_Control()
+        size = game_start.size
+        game_change = Game_Change(size[0] * SIZE_FOR_ALL, size[1] * SIZE_FOR_ALL)
+    
+        for y, row in enumerate(game_start.numpy_maze):
+            for x, column in enumerate(row):
+                if column == 0:
+                    game_change.add_wall(Wall(game_change, x, y, SIZE_FOR_ALL))
+    
+        for coins_place in game_start.cookie_spaces:
+            translated = maze_into_screen(coins_place)
+            cookie = Coins(game_change, translated[0] + SIZE_FOR_ALL / 2, translated[1] + SIZE_FOR_ALL / 2)
+            game_change.add_coins(cookie)
+    
+        for bonuses_place in game_start.powerup_spaces:
+            translated = maze_into_screen(bonuses_place)
+            powerup = Bonuses(game_change, translated[0] + SIZE_FOR_ALL / 2, translated[1] + SIZE_FOR_ALL / 2)
+            game_change.add_bonuses(powerup)
+    
+        for i, ghost_spawn in enumerate(game_start.ghost_spawns):
+            translated = maze_into_screen(ghost_spawn)
+            monsters = Monsters(game_change, translated[0], translated[1], SIZE_FOR_ALL, game_start,
+                          game_start.ghost_colors[i % 4])
+            game_change.add_monsters(monsters)
+    
+        pacman = Packman(game_change, SIZE_FOR_ALL, SIZE_FOR_ALL, SIZE_FOR_ALL)
+        game_change.add_pacman(pacman)
+        game_change.set_current_mode(Monsters_moving_const.FIND)
+        game_change.tick(120)
