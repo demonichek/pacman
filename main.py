@@ -495,7 +495,7 @@ class MovableObject(Object_in_game):
         self.last_working_direction = Moving_const.AGAIN_POS
         self.location_queue = []
         self.next_target = None
-        self.image = pygame.image.load('ghost.png')
+        # self.image = pygame.image.load('ghost.png')
 
     def get_next_location(self):
         return None if len(self.location_queue) == 0 else self.location_queue.pop(0)
